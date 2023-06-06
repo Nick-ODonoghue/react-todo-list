@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   // Setting useState for new items
   const [newItem, setNewItem] = useState('');
-  const [todos, setTodos] = useState([]);
+  // Setting the default state to a lookup of localStorage
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem('ITEMS');
+    if (localValue == null) return [];
+    return JSON.parse(localValue);
+  });
+
+  // Pushing our todos list into localStorage for semi persistent data
+  useEffect(() => {
+    localStorage.setItem('ITEMS', JSON.stringify(todos));
+  }, [todos]);
 
   // New item event handler calling setNewItem
   const handleNewItem = (e) => {
@@ -58,7 +68,7 @@ function App() {
 
   return (
     <>
-      <div className=' px-2 pt-4 border-2 container mx-auto items-center min-h-screen flex flex-col gap-4'>
+      <div className=' px-2 pt-4 container mx-auto items-center min-h-screen flex flex-col gap-4'>
         {/* Submit handler for the form */}
         <form onSubmit={handleSubmit}>
           <label htmlFor='item' className=' font-semibold mb-10'>
