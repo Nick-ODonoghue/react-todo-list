@@ -30,6 +30,32 @@ function App() {
     setNewItem('');
   };
 
+  // Toggle completion state of each todo item taking id and completed parameters
+  const toggleTodo = (id, completed) => {
+    // Call setTodos state setter passing it the current todos array parameter
+    setTodos((currentTodos) => {
+      // Map through current todos array
+      return currentTodos.map((todo) => {
+        // Conditional to check for the id parameter in our todos array
+        if (todo.id === id) {
+          // When id is found, then set the completed value to true
+          return { ...todo, completed };
+        }
+        // If id is not found then we can just return todo (the original todos array)
+        return todo;
+      });
+    });
+  };
+
+  // Todo deletion function taking an id paramter
+  const deleteTodo = (id) => {
+    // Call setTodos state setter passing it the current todos array paramter
+    setTodos((currentTodos) => {
+      // Filter our current todos array and return all items that do not equal the id parameter being passed in
+      return currentTodos.filter((todo) => todo.id !== id);
+    });
+  };
+
   return (
     <>
       <div className=' px-2 pt-4 border-2 container mx-auto items-center min-h-screen flex flex-col gap-4'>
@@ -56,17 +82,31 @@ function App() {
         </form>
         <h1 className=' font-bold text-2xl'>ToDo List</h1>
         <ul className=' w-1/2'>
+          {todos.length === 0 && "No ToDo's Added"}
           {/* Map through our todos array to dynamically render our todos list */}
           {todos.map((todo) => {
             return (
               <li key={todo.id} className='flex justify-between pb-4'>
                 <label htmlFor='checkbox' className='flex gap-2'>
-                  <input type='checkbox' checked={todo.complete} />
-                  <span className='self-center font-semibold'>
+                  <input
+                    type='checkbox'
+                    checked={todo.completed}
+                    // onChange calling toggleTodo and passing it the id & checked values as arguments
+                    onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+                  />
+                  <span
+                    className={`self-center font-semibold ${
+                      todo.completed ? ' line-through font-normal' : ''
+                    }`}
+                  >
                     {todo.title}
                   </span>
                 </label>
-                <button className='bg-transparent hover:bg-slate-400 text-red-700 font-semibold hover:text-red-700 py-1 px-3 border border-red-700 hover:border-transparent rounded'>
+                <button
+                  // onClick calling deleteTodo function and passing it the todo id as an argument
+                  onClick={() => deleteTodo(todo.id)}
+                  className='bg-transparent hover:bg-slate-400 text-red-700 font-semibold hover:text-red-700 py-1 px-3 border border-red-700 hover:border-transparent rounded'
+                >
                   Delete
                 </button>
               </li>
