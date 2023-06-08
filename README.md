@@ -48,4 +48,5 @@ Props
 [Le Wagon](https://www.lewagon.com/) & all the teachers, TAs and classmates from <em>1122</em>
 
 [Web Dev Simplified YT](https://www.youtube.com/@WebDevSimplified)
+
 [Web Dev Simplified](https://courses.webdevsimplified.com/)
